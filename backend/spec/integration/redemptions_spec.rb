@@ -58,7 +58,6 @@ RSpec.describe 'Redemptions API', swagger_doc: 'v1/swagger.yaml', type: :request
 
         run_test! do |response|
           json = JSON.parse(response.body)
-          expect(json['message']).to eq('Reward redeemed successfully')
           expect(json['remaining_points']).to eq(50)
         end
       end

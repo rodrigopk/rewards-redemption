@@ -18,6 +18,8 @@ RSpec.describe 'Auth API', swagger_doc: 'v1/swagger.yaml', type: :request do
         }
       }
 
+      let(:Authorization) { nil } # Authorization header is not required for sign-in
+
       response '200', 'valid credentials' do
         let(:user) { create(:user, password: 'password123') }
 
