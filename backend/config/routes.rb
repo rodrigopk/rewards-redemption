@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post 'auth/sign_in', to: 'auth#sign_in'
+
+      resources :rewards, only: [:index]
     end
   end
 end

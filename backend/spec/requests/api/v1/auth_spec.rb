@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Auth API', type: :request do
@@ -13,8 +14,8 @@ RSpec.describe 'Auth API', type: :request do
       let(:params) { { email: user.email, password: 'password123' } }
       it 'returns a JWT token and user info' do
         expect(response).to have_http_status(:ok)
-        
-        json = JSON.parse(response.body)
+
+        json = response.parsed_body
         expect(json['token']).to be_present
         expect(json['user']['email']).to eq(user.email)
       end
@@ -24,9 +25,9 @@ RSpec.describe 'Auth API', type: :request do
       let(:params) { { email: user.email, password: 'wrongpassword' } }
       it 'returns unauthorized' do
         expect(response).to have_http_status(:unauthorized)
-        
-        json = JSON.parse(response.body)
-        expect(json['error']).to eq("Invalid email or password")
+
+        json = response.parsed_body
+        expect(json['error']).to eq('Invalid email or password')
       end
     end
   end
