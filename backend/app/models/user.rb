@@ -8,4 +8,13 @@ class User < ApplicationRecord
   has_many :redemptions, dependent: :destroy
 
   validates :name, :email, presence: true
+
+  def to_serialized
+    {
+      id: id,
+      name: name,
+      email: email,
+      points: points
+    }
+  end
 end

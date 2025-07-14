@@ -14,4 +14,19 @@ RSpec.describe User, type: :model do
 
     expect(user.points).to eq(50)
   end
+
+  describe '#to_serialized' do
+    let(:user) { create(:user) }
+
+    it 'returns a serialized representation of the user' do
+      expected_serialized = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        points: user.points
+      }
+
+      expect(user.to_serialized).to eq(expected_serialized)
+    end
+  end
 end

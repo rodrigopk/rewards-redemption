@@ -10,12 +10,7 @@ module Api
           token = JsonWebToken.encode(user_id: user.id)
           render json: {
             token: token,
-            user: {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              points: user.points
-            }
+            user: user.to_serialized
           }, status: :ok
         else
           render json: { error: 'Invalid email or password' }, status: :unauthorized
