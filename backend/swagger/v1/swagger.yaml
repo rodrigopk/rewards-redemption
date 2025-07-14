@@ -1,0 +1,103 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/auth/sign_in":
+    post:
+      summary: Sign in a user and return a JWT token
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: valid credentials
+        '401':
+          description: invalid credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+  "/api/v1/points":
+    get:
+      summary: Retrieve the current user’s points balance
+      tags:
+      - User
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: authenticated user
+        '401':
+          description: unauthorized
+  "/api/v1/redemptions":
+    get:
+      summary: List redemption history for the current user
+      tags:
+      - Redemptions
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: user is authenticated
+        '401':
+          description: unauthenticated
+    post:
+      summary: Redeem a reward for the current user
+      tags:
+      - Redemptions
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: redemption successful
+        '422':
+          description: insufficient points
+        '404':
+          description: reward not found
+        '401':
+          description: unauthenticated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reward_id
+              properties:
+                reward_id:
+                  type: integer
+  "/api/v1/rewards":
+    get:
+      summary: Retrieve a list of available rewards
+      tags:
+      - Rewards
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: authenticated user
+        '401':
+          description: unauthorized
+servers:
+- url: http://localhost:3000
+  description: Local dev server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []
