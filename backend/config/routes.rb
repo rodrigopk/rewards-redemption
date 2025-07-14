@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       post 'auth/sign_in', to: 'auth#sign_in'
 
       resources :rewards, only: [:index]
-      resources :redemptions, only: [:index]
+      resources :redemptions, only: %i[index create]
     end
   end
 end
