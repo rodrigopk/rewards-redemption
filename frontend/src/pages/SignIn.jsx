@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import APIService from "../services/APIService";
 import { useAuth } from "../context/AuthContext";
 
-export default function SignIn() {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setToken } = useAuth();
@@ -56,3 +56,5 @@ export default function SignIn() {
     </div>
   );
 }
+
+export default SignIn;
