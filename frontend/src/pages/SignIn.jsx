@@ -1,20 +1,23 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { signIn } from "../services/APIService";
+import APIService from "../services/APIService";
 import { useAuth } from "../context/AuthContext";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setToken } = useAuth();
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await signIn({ email, password });
+      const data = await APIService.signIn({ email, password });
+
       setToken(data.token);
-      alert("Login successful!");
-      // TODO: redirect to rewards page
+      navigate("/rewards");
     } catch (error) {
       alert(error.message);
     }
