@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext";
+import { PointsContext } from "../../context/PointsContext";
 import NavBar from "../NavBar";
 
 beforeEach(() => {
@@ -18,17 +19,19 @@ afterEach(() => {
 });
 
 describe("NavBar", () => {
-  const renderWithAuth = (token = "fake-jwt-token") =>
+  const renderWithContext = (token = "fake-jwt-token") =>
     render(
       <AuthContext.Provider value={{ token }}>
-        <MemoryRouter>
-          <NavBar />
-        </MemoryRouter>
+        <PointsContext.Provider value={{ points: 120 }}>
+          <MemoryRouter>
+            <NavBar />
+          </MemoryRouter>
+        </PointsContext.Provider>
       </AuthContext.Provider>
     );
 
   it("renders when user is authenticated", async () => {
-    renderWithAuth();
+    renderWithContext();
 
     await waitFor(() => {
       expect(screen.getByRole("button")).toBeInTheDocument(); // dropdown button
@@ -36,13 +39,7 @@ describe("NavBar", () => {
   });
 
   it("does not render when user is not authenticated", async () => {
-    render(
-      <AuthContext.Provider value={{ token: null }}>
-        <MemoryRouter>
-          <NavBar />
-        </MemoryRouter>
-      </AuthContext.Provider>
-    );
+    renderWithContext(null);
 
     await waitFor(() => {
       expect(screen.queryByRole("button")).not.toBeInTheDocument();

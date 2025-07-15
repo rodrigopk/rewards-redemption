@@ -1,28 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import APIService from "../services/APIService";
-import { useAuth } from "../context/AuthContext";;
+import { useAuth } from "../context/AuthContext";
+import { usePoints } from "../context/PointsContext";
 
 const Navbar = () => {
   const { token } = useAuth();
-  const [points, setPoints] = useState(null);
+  const { points } = usePoints();
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
   const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const fetchPoints = async () => {
-      try {
-        const data = await APIService.getPoints(token);
-        setPoints(data.points);
-      } catch (err) {
-        console.error("Failed to fetch points:", err);
-      }
-    };
-
-    if (token) fetchPoints();
-  }, [token, navigate]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
