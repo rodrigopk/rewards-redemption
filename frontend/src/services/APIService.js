@@ -46,6 +46,17 @@ const APIService = {
 
     return await response.json();
   },
+  getRedemptions: async (token) => {
+    const response = await fetch(`${BASE_URL}/redemptions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch redemptions");
+    }
+    return await response.json();
+  }
 };
 
 export default APIService;

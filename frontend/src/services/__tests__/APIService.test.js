@@ -99,4 +99,30 @@ describe('APIService', () => {
       expect(result.points).toEqual(120);
     });
   });
+
+  describe("getRedemptions", () => {
+    const mockRedemptions = [
+      { id: 1, rewardedAt: "2025-07-15T17:50:44", reward: { id: 1, title: "Coffee", cost: 50 } },
+      { id: 2, rewardedAt: "2025-07-15T17:50:44", reward: { id: 2, title: "Gift Card", cost: 100 } }
+    ];
+
+    it("returns user redemptions when successful", async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockRedemptions
+      });
+
+      const result = await APIService.getRedemptions("test-token");
+
+      expect(fetch).toHaveBeenCalledWith(
+        "http://localhost:3000/api/v1/redemptions",
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: "Bearer test-token"
+          })
+        })
+      );
+      expect(result).toEqual(mockRedemptions);
+    });
+  });
 });

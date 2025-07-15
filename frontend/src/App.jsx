@@ -5,6 +5,7 @@ import Rewards from "./pages/Rewards";
 import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/NavBar";
 import Spinner from "./components/Spinner";
+import Redemptions from "./pages/Redemptions";
 
 const App = () => {
   const { token, isLoading } = useAuth();
@@ -26,6 +27,10 @@ const App = () => {
           <Route
             path="/rewards"
             element={token ? <Rewards /> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="/redemptions"
+            element={token ? <Redemptions /> : <Navigate to="/signin" />}
           />
         </Routes>
       </div>
