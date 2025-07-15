@@ -1,28 +1,22 @@
 import { useState } from "react";
 
+import { signIn } from "../services/APIService";
+import { useAuth } from "../context/AuthContext";
+
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setToken } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await fetch("http://localhost:3000/api/v1/auth/sign_in", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
+    try {
+      const data = await signIn({ email, password });
+      setToken(data.token);
       alert("Login successful!");
-      // You can redirect to rewards page later here
-    } else {
-      alert(data.error || "Login failed");
+      // TODO: redirect to rewards page
+    } catch (error) {
+      alert(error.message);
     }
   };
 

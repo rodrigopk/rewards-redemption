@@ -1,7 +1,9 @@
+// jest.config.js
 export default {
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
+  transform: {
+    "^.+\\.jsx?$": "babel-jest"
+  },
   testEnvironment: "jsdom",
-  moduleNameMapper: {
-    "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-  }
+  moduleFileExtensions: ["js", "jsx"],
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"]
 };
