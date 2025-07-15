@@ -1,15 +1,17 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setTokenState] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     if (savedToken) {
       setTokenState(savedToken);
     }
+    setIsLoading(false);
   }, []);
 
   const setToken = (newToken) => {
@@ -19,10 +21,11 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("token");
     }
     setTokenState(newToken);
+    setIsLoading(false);
   };
 
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider value={{ token, setToken, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

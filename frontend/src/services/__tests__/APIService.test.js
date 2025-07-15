@@ -8,7 +8,6 @@ describe('APIService', () => {
   });
 
   describe('signIn', () => {
-
     it('successfully signs in and returns token and user', async () => {
       const mockResponse = {
         token: 'fake-jwt-token',
@@ -77,6 +76,27 @@ describe('APIService', () => {
       await expect(APIService.getRewards("fake-token")).rejects.toThrow(
         "Failed to fetch rewards"
       );
+    });
+  });
+
+  describe("getPoints", () => {
+    it("returns user points when successful", async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ user_id: 1, points: 120 })
+      });
+
+      const result = await APIService.getPoints("test-token");
+
+      expect(fetch).toHaveBeenCalledWith(
+        "http://localhost:3000/api/v1/points",
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: "Bearer test-token"
+          })
+        })
+      );
+      expect(result.points).toEqual(120);
     });
   });
 });

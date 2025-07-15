@@ -31,7 +31,21 @@ const APIService = {
     }
 
     return await response.json();
-  }
+  },
+  getPoints: async (token) => {
+    const response = await fetch(`${BASE_URL}/points`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch points");
+    }
+
+    return await response.json();
+  },
 };
 
 export default APIService;
