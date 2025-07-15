@@ -56,6 +56,23 @@ const APIService = {
       throw new Error("Failed to fetch redemptions");
     }
     return await response.json();
+  },
+  redeemReward: async (token, rewardId) => {
+    const response = await fetch(`${BASE_URL}/redemptions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reward_id: rewardId }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to redeem reward");
+    }
+
+    return await response.json();
   }
 };
 

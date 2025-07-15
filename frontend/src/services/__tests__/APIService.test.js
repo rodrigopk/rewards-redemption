@@ -1,12 +1,14 @@
 import APIService from '../APIService';
 
-global.fetch = jest.fn();
+beforeEach(() => {
+  global.fetch = jest.fn();
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('APIService', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe('signIn', () => {
     it('successfully signs in and returns token and user', async () => {
       const mockResponse = {
@@ -123,6 +125,33 @@ describe('APIService', () => {
         })
       );
       expect(result).toEqual(mockRedemptions);
+    });
+  });
+
+  describe("redeemReward", () => {
+    it("should redeem reward successfully", async () => {
+      const mockResponse = {
+        redemption: { id: 1 },
+        remaining_points: 100,
+      };
+
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      });
+
+      const result = await APIService.redeemReward("fake-token", 1);
+      expect(result).toEqual(mockResponse);
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining("/redemptions"), expect.any(Object));
+    });
+
+    it("should throw error on failure", async () => {
+      fetch.mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({ error: "Insufficient points" }),
+      });
+
+      await expect(APIService.redeemReward("fake-token", 1)).rejects.toThrow("Insufficient points");
     });
   });
 });

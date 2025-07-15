@@ -1,8 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 
-import Rewards from "../Rewards";
 import { AuthProvider } from "../../context/AuthContext";
+import { PointsProvider } from "../../context/PointsContext";
 import APIService from "../../services/APIService";
+import Rewards from "../Rewards";
 
 jest.mock("../../services/APIService");
 
@@ -15,12 +16,15 @@ describe("Rewards Page", () => {
   beforeEach(() => {
     localStorage.setItem("token", "mock-token");
     APIService.getRewards.mockResolvedValue(mockRewards);
+    APIService.getPoints.mockResolvedValue({ user_id: 1, points: 120 });
   });
 
   it("renders rewards from the API", async () => {
     render(
       <AuthProvider>
-        <Rewards />
+        <PointsProvider>
+          <Rewards />
+        </PointsProvider>
       </AuthProvider>
     );
 
