@@ -19,7 +19,7 @@ const Rewards = () => {
         const data = await APIService.getRewards(token);
         setRewards(data);
         setError("");
-      } catch (err) {
+      } catch {
         setError("Failed to fetch rewards.");
       }
     }

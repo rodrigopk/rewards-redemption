@@ -23,7 +23,29 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' }],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    },
+  },
+  // Context files configuration
+  {
+    files: ['**/context/**/*.{js,jsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  // Test files configuration
+  {
+    files: ['**/*.test.{js,jsx}', '**/__tests__/**/*.{js,jsx}', '**/setupTests.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+        global: 'writable',
+      },
+    },
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
 ])

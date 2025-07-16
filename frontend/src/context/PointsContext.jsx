@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 import APIService from "../services/APIService";
 import { useAuth } from "./AuthContext";
@@ -9,7 +9,7 @@ export const PointsProvider = ({ children }) => {
   const { token } = useAuth();
   const [points, setPoints] = useState(null);
 
-  const refreshPoints = async () => {
+  const refreshPoints = useCallback(async () => {
     if (!token) return;
     try {
       const data = await APIService.getPoints(token);
@@ -17,11 +17,11 @@ export const PointsProvider = ({ children }) => {
     } catch (err) {
       console.error("Failed to fetch points:", err);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     refreshPoints();
-  }, [token]);
+  }, [refreshPoints]);
 
   return (
     <PointsContext.Provider value={{ points, setPoints, refreshPoints }}>

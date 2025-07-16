@@ -13,7 +13,7 @@ const Redemptions = () => {
       try {
         const data = await APIService.getRedemptions(token);
         setRedemptions(data);
-      } catch (err) {
+      } catch {
         setError("Could not load redemptions.");
       }
     }
