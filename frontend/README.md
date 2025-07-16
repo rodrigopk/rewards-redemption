@@ -9,8 +9,8 @@ It uses **Tailwind CSS** for styling, and integrates with the Ruby on Rails back
 
 ### Prerequisites
 
-- Node.js (v18+ recommended)
-- npm (v9+ recommended)
+- Node.js (v22+ recommended)
+- npm (v10+ recommended)
 - Backend server running at `http://localhost:3000`
 
 ---
