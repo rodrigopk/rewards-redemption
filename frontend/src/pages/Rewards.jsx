@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import Toast from "../components/Toast";
 import { useAuth } from "../context/AuthContext";
 import { usePoints } from "../context/PointsContext";
 import APIService from "../services/APIService";
@@ -10,12 +11,14 @@ const Rewards = () => {
   const [rewards, setRewards] = useState([]);
   const [error, setError] = useState("");
   const [loadingRewardId, setLoadingRewardId] = useState(null);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     async function fetchRewards() {
       try {
         const data = await APIService.getRewards(token);
         setRewards(data);
+        setError("");
       } catch (err) {
         setError("Failed to fetch rewards.");
       }
@@ -29,9 +32,11 @@ const Rewards = () => {
       setLoadingRewardId(rewardId);
       await APIService.redeemReward(token, rewardId);
       await refreshPoints();
+      setToast({ type: "success", message: "Reward redeemed successfully!" });
 
     } catch (error) {
       console.error(error.message);
+      setToast({ type: "error", message: "Failed to redeem reward." });
     } finally {
       setLoadingRewardId(null);
     }
@@ -68,6 +73,14 @@ const Rewards = () => {
           );
         })}
       </ul>
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

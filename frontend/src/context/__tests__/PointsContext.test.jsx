@@ -3,6 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { PointsProvider, usePoints } from "../PointsContext";
 import { AuthProvider } from "../AuthContext";
 import APIService from "../../services/APIService";
+import { act } from "react";
 
 jest.mock("../../services/APIService", () => ({
   getPoints: jest.fn(),
@@ -59,7 +60,9 @@ describe("PointsContext", () => {
       expect(screen.getByTestId("points")).toHaveTextContent("42")
     );
 
-    screen.getByText("Update Points").click();
+    act(() => {
+      screen.getByText("Update Points").click();
+    });
 
     await waitFor(() =>
       expect(screen.getByTestId("points")).toHaveTextContent("777")
