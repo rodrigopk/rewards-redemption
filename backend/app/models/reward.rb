@@ -5,4 +5,13 @@ class Reward < ApplicationRecord
 
   validates :title, :cost, presence: true
   validates :cost, numericality: { greater_than: 0 }
+
+  def to_serialized
+    {
+      id: id,
+      title: title,
+      description: description,
+      cost: cost
+    }
+  end
 end

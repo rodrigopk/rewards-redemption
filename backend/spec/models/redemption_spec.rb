@@ -16,12 +16,7 @@ RSpec.describe Redemption, type: :model do
         id: redemption.id,
         user_id: user.id,
         redeemed_at: redemption.created_at,
-        reward: {
-          id: reward.id,
-          title: reward.title,
-          description: reward.description,
-          cost: reward.cost
-        }
+        reward: redemption.reward.to_serialized
       }
 
       expect(redemption.to_serialized).to eq(expected_serialized)

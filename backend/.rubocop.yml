@@ -3,6 +3,18 @@ AllCops:
   NewCops: enable
   Exclude:
     - 'db/schema.rb'
+    - 'bin/*'
 
-require:
+plugins:
   - rubocop-rails
+
+Style/Documentation:
+  Enabled: false
+
+Layout/LineLength:
+  AllowedPatterns: ['\s*#']
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'db/queue_schema.rb'

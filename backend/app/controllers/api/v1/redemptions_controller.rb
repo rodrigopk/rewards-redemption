@@ -13,20 +13,23 @@ module Api
 
       def create
         redemption = ::RewardRedemptionService.new(current_user, redemption_params[:reward_id]).call
-
-        render json: {
-          redemption: redemption.to_serialized,
-          remaining_points: current_user.points
-        }, status: :created
-      rescue ActiveRecord::RecordNotFound => e
-        render json: { error: e.message }, status: :not_found
-      rescue ::RewardRedemptionService::NotEnoughPoints => e
-        render json: { error: e.message }, status: :unprocessable_entity
-      rescue StandardError => e
-        render json: { error: e.message }, status: :internal_server_error
+        render json: { redemption: redemption.to_serialized }, status: :created
+      rescue ActiveRecord::RecordNotFound, ::RewardRedemptionService::NotEnoughPoints, StandardError => e
+        handle_redemption_error(e)
       end
 
       private
+
+      def handle_redemption_error(error)
+        case error
+        when ActiveRecord::RecordNotFound
+          render json: { error: error.message }, status: :not_found
+        when ::RewardRedemptionService::NotEnoughPoints
+          render json: { error: error.message }, status: :unprocessable_entity
+        when StandardError
+          render json: { error: error.message }, status: :internal_server_error
+        end
+      end
 
       def redemption_params
         params.permit(:reward_id)

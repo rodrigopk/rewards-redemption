@@ -8,7 +8,7 @@ module Api
       def index
         rewards = Reward.all
 
-        render json: rewards, status: :ok
+        render json: rewards.map(&:to_serialized), status: :ok
       end
     end
   end

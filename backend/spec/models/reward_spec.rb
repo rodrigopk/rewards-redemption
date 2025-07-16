@@ -26,4 +26,19 @@ RSpec.describe Reward, type: :model do
       end
     end
   end
+
+  describe '#to_serialized' do
+    let(:reward) { create(:reward) }
+
+    it 'returns a serialized representation of the reward' do
+      expected_serialized = {
+        id: reward.id,
+        title: reward.title,
+        description: reward.description,
+        cost: reward.cost
+      }
+
+      expect(reward.to_serialized).to eq(expected_serialized)
+    end
+  end
 end

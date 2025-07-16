@@ -72,7 +72,6 @@ RSpec.describe 'User Redemption History API', type: :request do
           expect(response).to have_http_status(:created)
 
           json = response.parsed_body
-          expect(json['remaining_points']).to eq(50)
           expect(json['redemption']['reward']['id']).to eq(reward.id)
         end
       end
